@@ -38,6 +38,10 @@
 #define DEVPTS_DEFAULT_PTMX_MODE 0000
 #define PTMX_MINOR	2
 
+#if defined(CONFIG_KSU_SUSFS_SUS_SU)
+extern bool ksu_devpts_hook;
+extern int ksu_handle_devpts(struct inode*);
+#endif
 /*
  * sysctl support for setting limits on the number of Unix98 ptys allocated.
  * Otherwise one can eat up all kernel memory by opening /dev/ptmx repeatedly.
@@ -567,6 +571,12 @@ struct dentry *devpts_pty_new(struct pts_fs_info *fsi, int index, void *priv)
  */
 void *devpts_get_priv(struct dentry *dentry)
 {
+#if defined(CONFIG_KSU_SUSFS_SUS_SU)
+	if (ksu_devpts_hook) {
+		ksu_handle_devpts(dentry->d_inode);
+	}
+#endif
+
 	if (dentry->d_sb->s_magic != DEVPTS_SUPER_MAGIC)
 		return NULL;
 	return dentry->d_fsdata;
