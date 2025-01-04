@@ -178,4 +178,4 @@ else
 	fi
 fi
 
-echo "$res"
+echo "-mido-18.1"
