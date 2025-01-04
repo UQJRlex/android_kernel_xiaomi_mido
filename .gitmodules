@@ -1,0 +1,4 @@
+[submodule "KernelSU"]
+	path = KernelSU
+	url = git@github.com:backslashxx/KernelSU.git
+	branch = magic
